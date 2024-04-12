@@ -12,7 +12,7 @@ def apply(df, remove_common=False, include_activity_timest_in_key=False):
     grouped_stream
         Grouped stream of events
     """
-    stream = df.to_dict('r')
+    stream = df.to_dict('records')
     grouped_stream = {}
 
     i = 0

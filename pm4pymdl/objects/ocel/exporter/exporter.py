@@ -224,7 +224,7 @@ def get_python_obj(df, obj_df=None, parameters=None):
     # ret[prefix+"att_mand"] = acti_mandatory
     # ret[prefix+"ot_mand"] = ot_mandatory
 
-    stream = df.dropna(how="all", axis=1).to_dict("r")
+    stream = df.dropna(how="all", axis=1).to_dict("records")
     for el in stream:
         el2 = {}
         el2[prefix + "activity"] = el["activity"]
@@ -256,7 +256,7 @@ def get_python_obj(df, obj_df=None, parameters=None):
         ret[prefix + "events"][el["id"]] = el2
 
     for t in ot_df:
-        stream = ot_df[t].to_dict('r')
+        stream = ot_df[t].to_dict('records')
         for el in stream:
             el2 = {}
             el2[prefix + "type"] = t

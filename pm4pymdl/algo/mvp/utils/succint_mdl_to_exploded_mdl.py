@@ -3,7 +3,7 @@ import pandas as pd
 
 
 def apply(df):
-    stream = df.to_dict('r')
+    stream = df.to_dict('records')
 
     exploded_stream = succint_stream_to_exploded_stream.apply(stream)
 

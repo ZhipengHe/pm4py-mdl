@@ -9,7 +9,7 @@ activities = {}
 tstct = pd.read_csv(os.path.join(dir, "TSTCT.tsv"), sep="\t")
 tstct = tstct[tstct["SPRSL"] == "E"]
 tstct = tstct[["TCODE", "TTEXT"]]
-stream = tstct.to_dict("r")
+stream = tstct.to_dict("records")
 for row in stream:
     activities[row["TCODE"]] = row["TTEXT"]
 bkpf = pd.read_csv(os.path.join(dir, "bkpf_old.tsv"), sep="\t", dtype={"BELNR": str, "AWKEY": str, "XBLNR": str, "BUKRS": str})

@@ -40,7 +40,7 @@ def apply(df0, classifier_function=None, parameters=None):
         new_df = df[["event_id", "event_activity", "event_timestamp", ot]].dropna(subset=[ot])
         new_df = new_df.rename(
             columns={ot: "case:concept:name", "event_timestamp": "time:timestamp"})
-        log = new_df.to_dict("r")
+        log = new_df.to_dict("records")
         for ev in log:
             ev["event_objtype"] = ot
             ev["concept:name"] = classifier_function(ev)

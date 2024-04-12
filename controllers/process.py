@@ -90,7 +90,7 @@ class Process(object):
 
     def get_stream(self):
         if self.stream is None:
-            self.stream = self.exploded_dataframe.to_dict('r')
+            self.stream = self.exploded_dataframe.to_dict('records')
         return self.stream
 
     def get_log_obj_type(self, objtype):
@@ -99,7 +99,7 @@ class Process(object):
         dataframe = succint_mdl_to_exploded_mdl.apply(dataframe)
         dataframe = dataframe.rename(columns={"event_activity": "concept:name", "event_timestamp": "time:timestamp",
                                               objtype: "case:concept:name"})
-        stream = EventStream(dataframe.to_dict('r'))
+        stream = EventStream(dataframe.to_dict('records'))
         log = log_conv_factory.apply(stream)
         log = sorting.sort_timestamp(log, "time:timestamp")
         exported_log = base64.b64encode(xes_exporter.export_log_as_string(log)).decode("utf-8")
@@ -265,7 +265,7 @@ class Process(object):
         event_cols = [x for x in columns if x.startswith("event_")]
         obj_cols = [x for x in columns if not x.startswith("event_")]
         columns = event_cols + obj_cols
-        stream = table[columns].to_dict('r')
+        stream = table[columns].to_dict('records')
         events = []
         for ev in stream:
             events.append([])
@@ -406,9 +406,13 @@ class Process(object):
                                                    "min_edge_freq": self.selected_min_edge_freq_count})
         tfilepath = tempfile.NamedTemporaryFile(suffix='.svg')
         tfilepath.close()
+        mdfg_vis_factory.save(gviz, tfilepath.name)
+        self.model_view = base64.b64encode(open(tfilepath.name, "rb").read()).decode('utf-8')
+        
         tfilepath_name = tfilepath.name
-        tfilepath_name = "prova.svg"
+        tfilepath_name = "static/image/multigraph.svg"
         mdfg_vis_factory.save(gviz, tfilepath_name)
+        
 
         gviz2 = mdfg_vis_factory3.apply(model, measure=self.selected_decoration_measure,
                                        freq=self.selected_aggregation_measure,
@@ -418,10 +422,9 @@ class Process(object):
         tfilepath = tempfile.NamedTemporaryFile(suffix='.png')
         tfilepath.close()
         tfilepath_name = tfilepath.name
-        tfilepath_name = "prova.png"
+        tfilepath_name = "static/image/multigraph.png"
         mdfg_vis_factory.save(gviz2, tfilepath_name)
 
-        self.model_view = base64.b64encode(open(tfilepath_name, "rb").read()).decode('utf-8')
 
     def get_new_visualization(self):
         classifier_function = None
@@ -469,6 +472,10 @@ class Process(object):
         tfilepath.close()
         mdfg_vis_factory.save(gviz, tfilepath.name)
         self.model_view = base64.b64encode(open(tfilepath.name, "rb").read()).decode('utf-8')
+
+        tfilepath_name = tfilepath.name
+        tfilepath_name = "static/image/petri.svg"
+        mdfg_vis_factory.save(gviz, tfilepath_name)
 
     def get_mvp_visualization(self):
         parameters = {}

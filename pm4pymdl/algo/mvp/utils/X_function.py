@@ -2,7 +2,7 @@ from frozendict import frozendict
 
 
 def create_index(succint_dataframe):
-    events = succint_dataframe.to_dict("r")
+    events = succint_dataframe.to_dict("records")
     index = {}
     for idx, ev in enumerate(events):
         keys = [x for x in ev.keys() if not x.startswith("event_")]

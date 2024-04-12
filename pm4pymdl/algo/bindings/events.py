@@ -25,7 +25,7 @@ def apply_bound(value):
 
 
 def convert_to_stream(df):
-    stream = df.to_dict('r')
+    stream = df.to_dict('records')
     for i in range(len(stream)):
         stream_keys = sorted(list(stream[i].keys()))
         for j in range(len(stream_keys)):

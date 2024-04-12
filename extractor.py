@@ -22,7 +22,7 @@ def read_activities():
     tstct = pd.read_csv(os.path.join(dir, "TSTCT.tsv"), sep="\t")
     tstct = tstct[tstct["SPRSL"] == "E"]
     tstct = tstct[["TCODE", "TTEXT"]]
-    stream = tstct.to_dict("r")
+    stream = tstct.to_dict("records")
     for row in stream:
         Shared.activities[row["TCODE"]] = row["TTEXT"]
 
@@ -41,7 +41,7 @@ def read_ekbe():
     ekbe = ekbe[["BELNR", "EBELN"]]
     ekbe = ekbe.dropna(subset=["BELNR"])
     ekbe = ekbe.dropna(subset=["EBELN"])
-    stream = ekbe.to_dict("r")
+    stream = ekbe.to_dict("records")
     for row in stream:
         if not row["BELNR"] in Shared.ekbe:
             Shared.ekbe[row["BELNR"]] = set()
@@ -53,7 +53,7 @@ def read_ekpo():
     ekpo = ekpo[["BANFN", "EBELN"]]
     ekpo = ekpo.dropna(subset=["BANFN"])
     ekpo = ekpo.dropna(subset=["EBELN"])
-    stream = ekpo.to_dict("r")
+    stream = ekpo.to_dict("records")
     for row in stream:
         if not row["EBELN"] in Shared.ekpo:
             Shared.ekpo[row["EBELN"]] = set()
@@ -65,7 +65,7 @@ def read_vbfa():
     vbfa = vbfa[["VBELV", "VBELN"]]
     vbfa = vbfa.dropna(subset=["VBELV"])
     vbfa = vbfa.dropna(subset=["VBELN"])
-    stream = vbfa.to_dict("r")
+    stream = vbfa.to_dict("records")
     for row in stream:
         if not row["VBELN"] in Shared.vbfa:
             Shared.vbfa[row["VBELN"]] = set()
@@ -77,7 +77,7 @@ def read_lips():
     lips = lips[["VBELN", "VGBEL"]]
     lips = lips.dropna(subset=["VBELN"])
     lips = lips.dropna(subset=["VGBEL"])
-    stream = lips.to_dict("r")
+    stream = lips.to_dict("records")
     for row in stream:
         if not row["VBELN"] in Shared.lips:
             Shared.lips[row["VBELN"]] = set()
@@ -98,7 +98,7 @@ def extract_cdhdr():
     merged["event_timestamp"] = pd.to_datetime(merged["event_timestamp"], format="%d.%m.%Y %H:%M:%S")
     merged = merged.dropna(subset=["event_activity"])
     merged = merged.dropna(subset=["event_resource"])
-    stream = merged.to_dict("r")
+    stream = merged.to_dict("records")
     for ev in stream:
         #ev["OBJECTID"] = remove_zeros(ev["OBJECTID"])
         #ev["OBJECTID_3"] = remove_zeros(ev["OBJECTID_3"])
@@ -119,7 +119,7 @@ def extract_rbkp():
     rbkp["event_timestamp"] = pd.to_datetime(rbkp["event_timestamp"], format="%d.%m.%Y %H:%M:%S")
     rbkp = rbkp.dropna(subset=["event_activity"])
     rbkp = rbkp.dropna(subset=["event_resource"])
-    stream = rbkp.to_dict("r")
+    stream = rbkp.to_dict("records")
     for ev in stream:
         key = frozendict({"event_timestamp": ev["event_timestamp"],
                           "event_resource": ev["event_resource"], "event_activity": ev["event_activity"]})
@@ -137,7 +137,7 @@ def extract_bkpf():
     bkpf["event_timestamp"] = pd.to_datetime(bkpf["event_timestamp"], format="%d.%m.%Y %H:%M:%S")
     bkpf = bkpf.dropna(subset=["event_activity"])
     bkpf = bkpf.dropna(subset=["event_resource"])
-    stream = bkpf.to_dict("r")
+    stream = bkpf.to_dict("records")
     for ev in stream:
         key = frozendict({"event_timestamp": ev["event_timestamp"],
                           "event_resource": ev["event_resource"], "event_activity": ev["event_activity"]})
@@ -157,7 +157,7 @@ def extract_eban():
     eban["event_activity"] = "ME51N"
     eban = eban.dropna(subset=["event_activity"])
     eban = eban.dropna(subset=["event_resource"])
-    stream = eban.to_dict("r")
+    stream = eban.to_dict("records")
     for ev in stream:
         key = frozendict({"event_timestamp": ev["event_timestamp"],
                           "event_resource": ev["event_resource"], "event_activity": ev["event_activity"]})
@@ -174,7 +174,7 @@ def extract_ekko():
     ekko["event_activity"] = "ME21N"
     ekko = ekko.dropna(subset=["event_activity"])
     ekko = ekko.dropna(subset=["event_resource"])
-    stream = ekko.to_dict("r")
+    stream = ekko.to_dict("records")
     for ev in stream:
         key = frozendict({"event_timestamp": ev["event_timestamp"],
                           "event_resource": ev["event_resource"], "event_activity": ev["event_activity"]})
@@ -242,7 +242,7 @@ def extract_vbak():
     """
     vbak = vbak.dropna(subset=["VBTYP"])
     vbak = vbak.dropna(subset=["event_resource"])
-    stream = vbak.to_dict("r")
+    stream = vbak.to_dict("records")
     for ev in stream:
         # K => VA01
         # G => VA41
@@ -299,7 +299,7 @@ def extract_likp():
     likp["event_activity"] = likp["TCODE"]
     likp = likp.dropna(subset=["event_activity"])
     likp = likp.dropna(subset=["event_resource"])
-    stream = likp.to_dict("r")
+    stream = likp.to_dict("records")
     for ev in stream:
         key = frozendict({"event_timestamp": ev["event_timestamp"],
                           "event_resource": ev["event_resource"], "event_activity": ev["event_activity"]})

@@ -35,7 +35,7 @@ class Shared:
 
 def read_tstct():
     df = pd.read_csv("TSTCT.tsv", sep="\t", dtype={"SPRSL": str, "TCODE": str, "TTEXT": str})
-    stream = df.to_dict('r')
+    stream = df.to_dict('records')
     for el in stream:
         Shared.TSTCT[el["TCODE"]] = el["TTEXT"]
 
@@ -47,7 +47,7 @@ def get_activity(tcode):
 
 def read_ekbe():
     df = pd.read_csv("EKBE.tsv", sep="\t", dtype={"EBELN": str, "EBELP": str, "BELNR": str})
-    stream = df.to_dict('r')
+    stream = df.to_dict('records')
     for el in stream:
         if str(el["BELNR"]).lower() != "nan":
             if not el["BELNR"] in Shared.EKBE_belnr_ebeln:
@@ -59,7 +59,7 @@ def read_ekpo():
     df = pd.read_csv("EKPO.tsv", sep="\t",
                      dtype={"EBELN": str, "EBELP": str, "MATNR": str, "BANFN": str, "BNFPO": str, "NETPR": float,
                             "PEINH": float, "NETWR": float, "BTWR": float})
-    stream = df.to_dict('r')
+    stream = df.to_dict('records')
     for el in stream:
         if str(el["MATNR"]).lower() != "nan":
             if not el["MATNR"] in Shared.EKPO_matnr_ebeln:
@@ -84,7 +84,7 @@ def read_mseg():
     df = pd.read_csv("MSEG.tsv", sep="\t",
                      dtype={"MBLNR": str, "ZEILE": str, "MATNR": str, "LIFNR": str, "KUNNR": str, "EBELN": str,
                             "EBELP": str})
-    stream = df.to_dict('r')
+    stream = df.to_dict('records')
     for el in stream:
         if str(el["MATNR"]).lower() != "nan":
             if not el["MBLNR"] in Shared.MSEG_mblnr_matnr:
@@ -110,7 +110,7 @@ def read_mseg():
 def read_rseg():
     df = pd.read_csv("RSEG.tsv", sep="\t",
                      dtype={"BELNR": str, "EBELN": str, "EBELP": str, "MATNR": str, "WRBTR": float})
-    stream = df.to_dict('r')
+    stream = df.to_dict('records')
     for el in stream:
         if str(el["MATNR"]).lower() != "nan":
             if not el["BELNR"] in Shared.RSEG_belnr_matnr:
@@ -129,7 +129,7 @@ def read_rseg():
 
 def read_bseg():
     df = pd.read_csv("BSEG.tsv", sep="\t", dtype={"BELNR": str, "BUZEI": str, "AUGBL": str, "WRBTR": str})
-    stream = df.to_dict("r")
+    stream = df.to_dict("records")
     for el in stream:
         if str(el["AUGBL"]).lower() != "nan":
             if not el["BELNR"] in Shared.BSEG_belnr_augbl:
@@ -157,7 +157,7 @@ def read_mara():
     # NTGEW str
     # VOLUMN str
     # TRAGR str
-    stream = df.to_dict("r")
+    stream = df.to_dict("records")
     for el in stream:
         Shared.MARA_objects.append(
             {"object_id": el["MATNR"], "object_type": "MATNR", "object_table": "MARA", "object_ersda": el["ERSDA"],
@@ -168,7 +168,7 @@ def read_mara():
 
 def read_lfa1():
     df = pd.read_csv("LFA1.tsv", sep="\t", dtype={"LIFNR": str, "LAND1": str, "NAME1": str, "ORT01": str, "REGIO": str})
-    stream = df.to_dict("r")
+    stream = df.to_dict("records")
     for el in stream:
         Shared.LFA1_objects.append(
             {"object_id": el["LIFNR"], "object_type": "LIFNR", "object_table": "LFA1", "object_land1": el["LAND1"],
@@ -179,7 +179,7 @@ def read_lfa1():
 def read_eban():
     df = pd.read_csv("EBAN.tsv", sep="\t", dtype={"BANFN": str, "BNFPO": str, "ERNAM": str, "ERDAT": str, "MATNR": str})
     df["ERDAT"] = pd.to_datetime(df["ERDAT"], format="%d.%m.%Y", errors='coerce')
-    stream = df.to_dict('r')
+    stream = df.to_dict('records')
     for el in stream:
         if not el["BANFN"] in Shared.EBAN_events:
             Shared.EBAN_events[el["BANFN"]] = list()
@@ -191,7 +191,7 @@ def read_eban():
 def read_ekko():
     df = pd.read_csv("EKKO.tsv", sep="\t", dtype={"EBELN": str, "AEDAT": str, "ERNAM": str, "LIFNR": str})
     df["AEDAT"] = pd.to_datetime(df["AEDAT"], format="%d.%m.%Y", errors='coerce')
-    stream = df.to_dict('r')
+    stream = df.to_dict('records')
     for el in stream:
         if not el["EBELN"] in Shared.EKKO_events:
             Shared.EKKO_events[el["EBELN"]] = list()
@@ -205,7 +205,7 @@ def read_mkpf():
                      dtype={"MBLNR": str, "CPUDT": str, "CPUTM": str, "USNAM": str, "TCODE": str, "TCODE2": str})
     df["event_timestamp"] = df["CPUDT"] + " " + df["CPUTM"]
     df["event_timestamp"] = pd.to_datetime(df["event_timestamp"], format="%d.%m.%Y %H:%M:%S", errors='coerce')
-    stream = df.to_dict('r')
+    stream = df.to_dict('records')
     for el in stream:
         if str(el["TCODE"]).lower() != "nan":
             if not el["MBLNR"] in Shared.MKPF_events:
@@ -221,7 +221,7 @@ def read_rbkp():
     df = pd.read_csv("RBKP.tsv", sep="\t", dtype={"BELNR": str, "USNAM": str, "TCODE": str, "CPUDT": str, "CPUTM": str})
     df["event_timestamp"] = df["CPUDT"] + " " + df["CPUTM"]
     df["event_timestamp"] = pd.to_datetime(df["event_timestamp"], format="%d.%m.%Y %H:%M:%S", errors='coerce')
-    stream = df.to_dict('r')
+    stream = df.to_dict('records')
     for el in stream:
         if str(el["TCODE"]).lower() != "nan":
             if not el["BELNR"] in Shared.RBKP_events:
@@ -240,7 +240,7 @@ def read_bkpf():
     df = df[df["BELNR"].isin(rbkp_df["BELNR"])]
     df["event_timestamp"] = df["CPUDT"] + " " + df["CPUTM"]
     df["event_timestamp"] = pd.to_datetime(df["event_timestamp"], format="%d.%m.%Y %H:%M:%S", errors='coerce')
-    stream = df.to_dict('r')
+    stream = df.to_dict('records')
     for el in stream:
         if str(el["TCODE"]).lower() != "nan":
             if not el["BELNR"] in Shared.BKPF_events:

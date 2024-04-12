@@ -10,7 +10,7 @@ from networkx.algorithms.community import quality
 
 log0 = mdl_importer.apply("example_logs/mdl/log_opp_red.mdl")
 log = succint_mdl_to_exploded_mdl.apply(log0)
-stream = log.to_dict('r')
+stream = log.to_dict('records')
 nodes = dict()
 for ev in stream:
     ev2 = {x: y for x, y in ev.items() if str(y) != "nan"}

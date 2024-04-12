@@ -127,7 +127,7 @@ xes_exporter.apply(log, "vbfagraph.xes")
 print("C")
 """
 print(dataframe.columns)
-doc_types = dataframe[["case:concept:name", "BLART"]].to_dict('r')
+doc_types = dataframe[["case:concept:name", "BLART"]].to_dict('records')
 doc_types = {str(x["case:concept:name"]): str(x["BLART"]) for x in doc_types if x["BLART"] is not None}
 # print(doc_types)
 df2 = dataframe.dropna(subset=["case:concept:name", "AUGBL"])

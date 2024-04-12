@@ -34,7 +34,7 @@ def extract_cdhdr():
     merged[Shared.timestamp_column] = pd.to_datetime(merged[Shared.timestamp_column], format="%d.%m.%Y %H:%M:%S")
     merged = merged.dropna(subset=[Shared.activity_column])
     merged = merged.dropna(subset=["event_resource"])
-    stream = merged.to_dict("r")
+    stream = merged.to_dict("records")
     for ev in stream:
         if ev["OBJECTID"] not in Shared.associated_events:
             Shared.associated_events[ev["OBJECTID"]] = []
@@ -64,7 +64,7 @@ def read_activities():
     tstct = pd.read_csv(os.path.join(Shared.dir, "TSTCT.tsv"), sep="\t")
     tstct = tstct[tstct["SPRSL"] == "E"]
     tstct = tstct[["TCODE", "TTEXT"]]
-    stream = tstct.to_dict("r")
+    stream = tstct.to_dict("records")
     for row in stream:
         Shared.tcodes[row["TCODE"]] = row["TTEXT"]
 
@@ -73,7 +73,7 @@ def read_vbak():
     vbak = pd.read_csv(os.path.join(Shared.dir, "vbak.tsv"), sep="\t", dtype={"VBELN": str, "VBTYP": str})
     vbak[Shared.timestamp_column] = vbak["ERDAT"] + " " + vbak["ERZET"]
     vbak[Shared.timestamp_column] = pd.to_datetime(vbak[Shared.timestamp_column], format="%d.%m.%Y %H:%M:%S")
-    vbak = vbak.to_dict("r")
+    vbak = vbak.to_dict("records")
     Shared.vbeln = {ev["VBELN"]: ev for ev in vbak}
 
 
@@ -89,7 +89,7 @@ if __name__ == "__main__":
     # df = df.sample(n=100)
     vbfa["event_timestamp"] = vbfa["ERDAT"] + " " + vbfa["ERZET"]
     vbfa["event_timestamp"] = pd.to_datetime(vbfa["event_timestamp"], format="%d.%m.%Y %H:%M:%S")
-    stream = vbfa.to_dict("r")
+    stream = vbfa.to_dict("records")
     for ev in stream:
         id1 = ev["VBELV"]
         id2 = ev["VBELN"]

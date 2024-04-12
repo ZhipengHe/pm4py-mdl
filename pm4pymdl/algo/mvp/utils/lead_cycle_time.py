@@ -1,6 +1,6 @@
 def calculate_lead_time(succint_dataframe):
     if len(succint_dataframe) > 0:
-        ev_timest = succint_dataframe[["event_start_timestamp", "event_timestamp"]].to_dict('r')
+        ev_timest = succint_dataframe[["event_start_timestamp", "event_timestamp"]].to_dict('records')
         ev_timest = sorted([(x["event_start_timestamp"].timestamp(), x["event_timestamp"].timestamp()) for x in ev_timest])
         return max(x[1] for x in ev_timest) - ev_timest[0][0]
     return 0.0
@@ -9,7 +9,7 @@ def calculate_lead_time(succint_dataframe):
 def calculate_cycle_time(succint_dataframe):
     if len(succint_dataframe) > 0:
         cycle = 0.0
-        ev_timest = succint_dataframe[["event_start_timestamp", "event_timestamp"]].to_dict('r')
+        ev_timest = succint_dataframe[["event_start_timestamp", "event_timestamp"]].to_dict('records')
         ev_timest = sorted(
             [(x["event_start_timestamp"].timestamp(), x["event_timestamp"].timestamp()) for x in ev_timest])
         curr_min = ev_timest[0][0]

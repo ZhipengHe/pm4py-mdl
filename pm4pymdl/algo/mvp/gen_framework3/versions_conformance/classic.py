@@ -19,7 +19,7 @@ def get_conf_stream_from_dataframe(df, parameters=None):
     if df_type == "exploded":
         stream = exploded_mdl_to_stream.apply(df)
     else:
-        stream = df.to_dict('r')
+        stream = df.to_dict('records')
 
     for ev in stream:
         keys = list(ev.keys())

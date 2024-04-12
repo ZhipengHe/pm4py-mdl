@@ -11,10 +11,10 @@ def apply(df, source_attr, target_attr, type_attr, timestamp_key, reverse=False)
     df[type_attr] = df[type_attr].astype(str)
 
     first_df = df.groupby(source_attr).first().reset_index()
-    timestamps = first_df[[timestamp_key, source_attr]].to_dict('r')
+    timestamps = first_df[[timestamp_key, source_attr]].to_dict('records')
     timestamps = {x[source_attr]: x[timestamp_key] for x in timestamps}
 
-    map_types = df[[source_attr, type_attr]].to_dict('r')
+    map_types = df[[source_attr, type_attr]].to_dict('records')
     map_types = {x[source_attr]: x[type_attr] for x in map_types if x[type_attr] != 'None'}
 
     map_source_target = dict(df.groupby([source_attr, target_attr]).size())

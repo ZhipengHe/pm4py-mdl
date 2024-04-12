@@ -28,7 +28,7 @@ def read_vbap():
     vbap = pd.read_csv(os.path.join(Shared.dir, "vbap.tsv"), sep="\t", dtype={"VBELN": str, "MATNR": str})
     vbap = vbap.dropna(subset=["VBELN"])
     vbap = vbap.dropna(subset=["MATNR"])
-    vbap = vbap.to_dict("r")
+    vbap = vbap.to_dict("records")
     for el in vbap:
         vbeln = el["VBELN"]
         matnr = el["MATNR"]
@@ -41,7 +41,7 @@ def read_ekpo():
     ekpo = pd.read_csv(os.path.join(Shared.dir, "ekpo.tsv"), sep="\t", dtype={"EBELN": str, "MATNR": str})
     ekpo = ekpo.dropna(subset=["EBELN"])
     ekpo = ekpo.dropna(subset=["MATNR"])
-    ekpo = ekpo.to_dict("r")
+    ekpo = ekpo.to_dict("records")
     for ev in ekpo:
         ebeln = ev["EBELN"]
         matnr = ev["MATNR"]
@@ -54,7 +54,7 @@ def read_lips():
     lips = pd.read_csv(os.path.join(Shared.dir, "lips.tsv"), sep="\t", dtype={"VBELN": str, "MATNR": str})
     lips = lips.dropna(subset=["VBELN"])
     lips = lips.dropna(subset=["MATNR"])
-    lips = lips.to_dict("r")
+    lips = lips.to_dict("records")
     for ev in lips:
         vbeln = ev["VBELN"]
         matnr = ev["MATNR"]
@@ -70,7 +70,7 @@ def read_ekko():
     ekko[Shared.timestamp_column] = pd.to_datetime(ekko[Shared.timestamp_column], format="%d.%m.%Y")
     ekko[Shared.activity_column] = "ME21N"
     ekko = ekko.dropna(subset=[Shared.activity_column])
-    stream = ekko.to_dict("r")
+    stream = ekko.to_dict("records")
     events = set()
     for ev in stream:
         ebeln = ev["EBELN"]
@@ -92,7 +92,7 @@ def read_eban():
     eban = pd.read_csv(os.path.join(Shared.dir, "eban.tsv"), sep="\t", dtype={"BANFN": str, "MATNR": str})
     eban["ERDAT"] = pd.to_datetime(eban["ERDAT"], format="%d.%m.%Y")
     eban = eban.rename(columns={"ERDAT": Shared.timestamp_column})
-    eban = eban.to_dict("r")
+    eban = eban.to_dict("records")
     # EINKBELEG
     events = set()
     for ev in eban:
@@ -113,7 +113,7 @@ def extract_bkpf():
     bkpf = bkpf.rename(columns={"USNAM": "event_resource", "TCODE": Shared.activity_column})
     bkpf[Shared.timestamp_column] = bkpf["CPUDT"] + " " + bkpf["CPUTM"]
     bkpf[Shared.timestamp_column] = pd.to_datetime(bkpf[Shared.timestamp_column], format="%d.%m.%Y %H:%M:%S")
-    stream = bkpf.to_dict("r")
+    stream = bkpf.to_dict("records")
     for ev in stream:
         awkey = ev["AWKEY"]
         if awkey not in Shared.bkpf:
@@ -127,7 +127,7 @@ def read_activities():
     tstct = pd.read_csv(os.path.join(Shared.dir, "TSTCT.tsv"), sep="\t")
     tstct = tstct[tstct["SPRSL"] == "E"]
     tstct = tstct[["TCODE", "TTEXT"]]
-    stream = tstct.to_dict("r")
+    stream = tstct.to_dict("records")
     for row in stream:
         Shared.tcodes[row["TCODE"]] = row["TTEXT"]
 
@@ -137,7 +137,7 @@ def read_vbak():
     vbak[Shared.timestamp_column] = vbak["ERDAT"] + " " + vbak["ERZET"]
     vbak[Shared.timestamp_column] = pd.to_datetime(vbak[Shared.timestamp_column], format="%d.%m.%Y %H:%M:%S")
     # vbak = vbak[["VBELN", Shared.timestamp_column]]
-    vbak = vbak.to_dict("r")
+    vbak = vbak.to_dict("records")
     Shared.vbeln = {ev["VBELN"]: frozendict({"event_" + x: y for x, y in ev.items()}) for ev in vbak}
     Shared.timestamps = {ev["VBELN"]: ev[Shared.timestamp_column] for ev in vbak}
     # print(Shared.vbeln)
@@ -193,7 +193,7 @@ if __name__ == "__main__":
     # df = df.sample(n=100)
     vbfa["event_timestamp"] = vbfa["ERDAT"] + " " + vbfa["ERZET"]
     vbfa["event_timestamp"] = pd.to_datetime(vbfa["event_timestamp"], format="%d.%m.%Y %H:%M:%S")
-    stream = vbfa.to_dict("r")
+    stream = vbfa.to_dict("records")
     for ev in stream:
         id1 = ev["VBELV"]
         id2 = ev["VBELN"]
