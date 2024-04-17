@@ -50,6 +50,13 @@ Then, the web application will be available at `http://127.0.0.1:5000/`.
 
 To understand how to use the package, please refer to folder `example_code`.
 
+## To Do
+
+- [ ] Update the package to be compatible with the latest version of `pm4py` and `pandas`.
+- [ ] Add more functionalities to the package. Such as, add buttons to save SVG or PNG files.
+- [ ] Explore the possibility of using OCEL 2.0 dataset to generate Object Centric Petri Net.
+
+
 ## License
 
 This repository is licensed under the MIT License.

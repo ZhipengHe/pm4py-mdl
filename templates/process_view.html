@@ -20,7 +20,7 @@
               <button id="goback" onclick="javascript:goToCasesView()">Go to Events View</button><br />
               <!--<button id="activitysel" onclick="javascript:goToActOtSelection()">Act./Type Sel.</button><br /><br />-->
           </div>
-          <div style="display: none">
+          <div >
               Log:
               <select id="logselector" name="logselector">
               </select>
@@ -30,22 +30,23 @@
               <b>Model:</b><br />
               <select id="model_type" name="model_type">
                   <option value="multigraph">Multigraph</option>
-                  <option value="petri">Petri Net</option>
-                  <!--<option value="process_tree">oc-PTree</option>
+                  <option value="petri_replay">OCPN (Token Replay)</option>
+                  <option value="mvp_frequency">MVP (frequency)</option>
+                  <option value="process_tree">oc-PTree</option>
                   <option value="alpha_petri">oc-Net-Alpha</option>
                   <option value="inductive_petri">oc-Net-Inductive</option>
-                  <option value="dfg">oc-DFG</option>-->
+                  <option value="dfg">oc-DFG</option>
               </select>
           </div>
-          <div style="display: none">
-              <b>Classifier:</b>
+          <div>
+              <b>Classifier (oc-*):</b>
               <select id="classifier" name="classifier">
                   <option value="activity">Activity Classifier</option>
                   <option value="combined">Combined Classifier</option>
               </select>
           </div>
-          <div style="display: none">
-              <b>Aggregation:</b>
+          <div>
+              <b>Aggregation (Multigraph):</b>
               <select id="aggregation_measure" name="aggregation_measure">
                   <option value="events">Events</option>
                   <option value="objects">Objects</option>
@@ -53,15 +54,15 @@
                   <option value="semantics">Semantics</option>
               </select>
           </div>
-          <div style="display: none">
-              <b>Decoration:</b>
+          <div>
+              <b>Decoration (Multigraph, oc-*):</b>
               <select id="decoration_measure" name="decoration_measure">
                   <option value="frequency">Frequency</option>
                   <option value="performance">Performance</option>
               </select>
           </div>
           <div>
-              <b>Project:</b>
+              <b>Project (Multigraph, oc-*):</b>
               <select id="projection_measure" name="projection_measure">
                   <option value="no">No</option>
                   <option value="source">Source</option>
@@ -76,18 +77,19 @@
               Filter paths (min.):<br />
               <input type="text" id="min_paths_count" />
           </div>
-          <div style="display: none">
-              Must-edges Noise:<br />
+          <div>
+              Must-edges Noise (Multigraph):<br />
               <input type="text" id="noise_must" />
           </div>
-          <div style="display: none">
-              N.Objects Noise:<br />
+          <div>
+              N.Objects Noise (Multigraph):<br />
               <input type="text" id="noise_objects" />
           </div>
           <div>
              <button onclick="javascript:formCookie()">Apply Settings</button>
           </div>
-          <div style="display: none">
+          <!-- style="display: none" -->
+          <div>
               <a href="javascript:getTimestampDistribution()">Get Timestamp distribution</a><br />
               <a href="javascript:filterByTimestamp()">Filter by Timestamp (keep events)</a>
           </div>
